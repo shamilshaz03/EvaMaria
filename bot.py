@@ -6,7 +6,24 @@ logging.config.fileConfig('logging.conf')
 logging.getLogger().setLevel(logging.INFO)
 logging.getLogger("pyrogram").setLevel(logging.ERROR)
 logging.getLogger("imdbpy").setLevel(logging.ERROR)
+from flask import Flask
+import threading
 
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Bot is running"
+
+def run_server():
+    app.run(host="0.0.0.0", port=8080)
+
+if __name__ == "__main__":
+    # Start the Flask server in a separate thread if needed
+    server_thread = threading.Thread(target=run_server)
+    server_thread.start()
+
+    # Your existing bot code starts here
 from pyrogram import Client, __version__
 from pyrogram.raw.all import layer
 from database.ia_filterdb import Media
